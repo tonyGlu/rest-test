@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crud-php
+  labels:
+    app: crud-php
+  annotations:
+    monitoring: 'true'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crud-php
+  template:
+    metadata:
+      labels:
+        app: crud-php
+    spec:
+      containers:
+        - env:
+            - name: WHATEVER_ENV
+              value: WHATEVER_VALUE
+          image: tonyglu/rest-test
+          imagePullPolicy: Always
+          name: crud-php
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crud-php-service
+spec:
+  selector:
+    app: crud-php
+  ports:
+    - port: 8080
+      targetPort: 8082
+  type: LoadBalancer
