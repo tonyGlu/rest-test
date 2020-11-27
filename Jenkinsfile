@@ -27,9 +27,10 @@ pipeline {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                             myapp.push("latest")
                             myapp.push("${env.BUILD_ID}")
+						}
                     }
                 }
-        }    
+			}    
         stage('Deploy to GKE') {
             steps{
                 sh "sed -i 's/tonyglu/rest-test:latest/rest-test:${env.BUILD_ID}/g' deployment.yaml"
@@ -38,5 +39,4 @@ pipeline {
         }
     } 
 	
-}
 }
